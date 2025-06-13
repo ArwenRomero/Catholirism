@@ -1,0 +1,563 @@
+﻿@page
+@model Catholirism.Pages.ViewNotesModel
+@{
+    ViewData["Title"] = "Gerenciar Anotações";
+}
+
+<style>
+    .catholic-page {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .catholic-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #6f42c1 0%, #8e44ad 100%);
+        color: white;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 15L55 35L75 35L60 50L65 70L50 55L35 70L40 50L25 35L45 35Z" fill="rgba(255,255,255,0.08)"/></svg>') repeat;
+        background-size: 60px 60px;
+    }
+
+    .page-header h2 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    .page-header::after {
+        content: '📖';
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+        font-size: 2.5rem;
+        opacity: 0.4;
+        z-index: 1;
+    }
+
+    .form-container {
+        padding: 2.5rem;
+    }
+
+    .notes-info {
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+        border-radius: 12px;
+        padding: 1.8rem;
+        margin-bottom: 2.5rem;
+        border-left: 4px solid #ff9800;
+        position: relative;
+    }
+
+    .notes-info::before {
+        content: '✍️';
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        font-size: 1.8rem;
+        opacity: 0.7;
+    }
+
+    .notes-info h4 {
+        color: #e65100;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .notes-info h4::before {
+        content: '✨';
+        font-size: 1.2rem;
+    }
+
+    .notes-info p {
+        color: #bf360c;
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.6;
+        font-weight: 500;
+    }
+
+    .section-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        margin-bottom: 2.5rem;
+        overflow: hidden;
+        border: 1px solid #e9ecef;
+    }
+
+    .section-header {
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        color: white;
+        padding: 1.5rem 2rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: relative;
+    }
+
+    .section-header.new-note::before {
+        content: '✍️';
+        font-size: 1.8rem;
+    }
+
+    .section-header.saved-notes::before {
+        content: '📚';
+        font-size: 1.8rem;
+    }
+
+    .section-header.view-content::before {
+        content: '👁️';
+        font-size: 1.8rem;
+    }
+
+    .section-content {
+        padding: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 2.2rem;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.8rem;
+        font-size: 1.2rem;
+        position: relative;
+        padding-left: 2.5rem;
+    }
+
+    .form-group label[for*="FileName"]::before {
+        content: '📝';
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.4rem;
+    }
+
+    .form-group label:not([for])::before {
+        content: '✏️';
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.4rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1.3rem 1.6rem;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+        box-sizing: border-box;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #8e44ad;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(142, 68, 173, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form-control:hover {
+        border-color: #ced4da;
+        background: white;
+    }
+
+    textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        color: white;
+        padding: 1rem 2.5rem;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 6px 20px rgba(142, 68, 173, 0.3);
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(142, 68, 173, 0.4);
+        background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    }
+
+    .submit-btn:active {
+        transform: translateY(-1px);
+    }
+
+    .submit-btn.save::after {
+        content: '💾';
+        font-size: 1rem;
+    }
+
+    .submit-btn.view::after {
+        content: '👁️';
+        font-size: 1rem;
+    }
+
+    .select-container {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+
+    .select-container select {
+        width: 100%;
+        padding: 1.3rem 1.6rem;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        background: #f8f9fa;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        appearance: none;
+        padding-right: 3rem;
+    }
+
+    .select-container::after {
+        content: '▼';
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        pointer-events: none;
+        font-size: 0.9rem;
+    }
+
+    .select-container select:focus {
+        outline: none;
+        border-color: #8e44ad;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(142, 68, 173, 0.1);
+    }
+
+    .select-container select:hover {
+        border-color: #ced4da;
+        background: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: #6c757d;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 12px;
+        border: 2px dashed #dee2e6;
+        position: relative;
+    }
+
+    .empty-state::before {
+        content: '📝';
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .file-content {
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        border-radius: 12px;
+        padding: 2rem;
+        border: 1px solid #e9ecef;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .file-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    }
+
+    .file-content h3 {
+        color: #495057;
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .file-content h3::before {
+        content: '📄';
+        font-size: 1.5rem;
+    }
+
+    .file-content pre {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 1.5rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-family: 'Courier New', monospace;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: #495057;
+        margin: 0;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .divider {
+        height: 2px;
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        margin: 2.5rem 0;
+        border-radius: 1px;
+        opacity: 0.3;
+    }
+
+    
+    .catholic-container {
+        animation: slideInUp 0.8s ease-out;
+    }
+
+    .section-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    @@keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    
+    @@media (max-width: 768px) {
+        .catholic-container {
+            margin: 1rem;
+            border-radius: 10px;
+        }
+        
+        .page-header {
+            padding: 2rem 1.5rem;
+        }
+        
+        .page-header h2 {
+            font-size: 2rem;
+        }
+        
+        .form-container {
+            padding: 1.8rem;
+        }
+        
+        .section-content {
+            padding: 1.5rem;
+        }
+        
+        .form-group label {
+            font-size: 1.1rem;
+            padding-left: 2rem;
+        }
+        
+        .form-control {
+            padding: 1.1rem 1.3rem;
+            font-size: 1rem;
+        }
+        
+        .submit-btn {
+            padding: 0.9rem 2rem;
+            font-size: 1rem;
+        }
+
+        .page-header::after {
+            display: none;
+        }
+
+        .notes-info::before {
+            display: none;
+        }
+
+        .notes-info {
+            padding: 1.5rem;
+        }
+
+        .section-header {
+            font-size: 1.3rem;
+            padding: 1.2rem 1.5rem;
+        }
+
+        .empty-state {
+            padding: 2rem 1.5rem;
+        }
+
+        .file-content {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<div class="catholic-page">
+    <div class="catholic-container">
+        <div class="page-header">
+            <h2>Gerenciar Anotações Espirituais</h2>
+        </div>
+
+        <div class="form-container">
+            <div class="notes-info">
+                <h4>Registro de Reflexões e Anotações</h4>
+                <p>Mantenha suas reflexões espirituais, anotações de peregrinação e pensamentos sagrados organizados. Cada nota é um testemunho da sua jornada de fé.</p>
+            </div>
+
+            <!-- Nova Anotação -->
+            <div class="section-card">
+                <div class="section-header new-note">
+                    Nova Anotação Espiritual
+                </div>
+                <div class="section-content">
+                    <form method="post" asp-page-handler="Save">
+                        <div class="form-group">
+                            <label for="FileName">Nome da Anotação</label>
+                            <input asp-for="FileName" class="form-control" placeholder="Ex: Reflexões sobre a Peregrinação" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Conteúdo da Reflexão</label>
+                            <textarea asp-for="NoteText" class="form-control" placeholder="Escreva aqui suas reflexões, orações ou anotações espirituais..."></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn save">Salvar Anotação</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Notas Salvas -->
+            <div class="section-card">
+                <div class="section-header saved-notes">
+                    Anotações Preservadas
+                </div>
+                <div class="section-content">
+                    @if (Model.Files.Any())
+                    {
+                        <form method="post" asp-page-handler="View">
+                            <div class="select-container">
+                                <select name="fileToView" class="form-control">
+                                    @foreach (var file in Model.Files)
+                                    {
+                                        <option value="@file">@file</option>
+                                    }
+                                </select>
+                            </div>
+                            <button type="submit" class="submit-btn view">Visualizar Conteúdo</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="empty-state">
+                            <p>Nenhuma anotação espiritual encontrada.</p>
+                            <p>Comece criando sua primeira reflexão acima.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.FileContent))
+            {
+                <div class="divider"></div>
+                
+                <!-- Conteúdo Visualizado -->
+                <div class="section-card">
+                    <div class="section-header view-content">
+                        Conteúdo da Anotação
+                    </div>
+                    <div class="section-content">
+                        <div class="file-content">
+                            <h3>Texto da Reflexão</h3>
+                            <pre>@Model.FileContent</pre>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

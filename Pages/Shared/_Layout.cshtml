@@ -1,0 +1,466 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Catholirism</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Catholirism.styles.css" asp-append-version="true" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #fdfbf7 0%, #f8f4e6 50%, #f3efd5 100%);
+            min-height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 20L52 35L65 35L55 45L57 60L50 50L43 60L45 45L35 35L48 35Z" fill="rgba(184,134,11,0.03)"/></svg>') repeat;
+            background-size: 80px 80px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            margin-bottom: 0;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg,rgb(241, 165, 0) 0%,rgb(255, 145, 0) 50%,rgb(255, 208, 0) 100%) !important;
+            border-bottom: 3px solid #d97706;
+            padding: 1rem 0;
+            position: relative;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 15L55 35L75 35L60 50L65 70L50 55L35 70L40 50L25 35L45 35Z" fill="rgba(255,255,255,0.05)"/></svg>') repeat;
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff !important;
+            text-decoration: none;
+            position: relative;
+            z-index: 1;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: #fbbf24 !important;
+            transform: translateY(-1px);
+        }
+
+        .navbar-brand img {
+            height: 2.8em;
+            width: auto;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+
+        .navbar-nav {
+            gap: 0.8rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .nav-item {
+            position: relative;
+            flex: 1;
+            max-width: 220px;
+        }
+
+        .nav-link {
+            color: #ffffff !important;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            margin: 0;
+            text-align: center;
+            font-size: 0.9rem;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgb(255, 166, 0), rgba(255, 174, 0, 0.94));
+            border-radius: 8px;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-link:hover::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .nav-link:hover {
+            color: #ffffff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 153, 0, 0.95);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        main {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg,rgb(250, 193, 5), #fbbf24,rgb(217, 168, 6));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .footer {
+            background: linear-gradient(135deg,rgb(255, 208, 0) 0%,rgb(255, 136, 0) 50%,rgb(255, 166, 0) 100%) !important;
+            color: #ffffff !important;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 3px solid rgb(255, 187, 0);
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 15L55 35L75 35L60 50L65 70L50 55L35 70L40 50L25 35L45 35Z" fill="rgba(255,255,255,0.03)"/></svg>') repeat;
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .footer .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .footer a {
+            color: #fbbf24;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .footer a:hover {
+            color: #ffffff;
+            background: rgba(251, 191, 36, 0.2);
+            border-color: rgba(251, 191, 36, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+        }
+
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 0.5rem;
+            background: rgba(217, 119, 6, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggler:hover {
+            background: rgba(255, 145, 0, 0.99);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        .navbar-brand, .nav-link, main, .footer {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .navbar-brand {
+            animation-delay: 0.1s;
+        }
+
+        .nav-link:nth-child(1) { animation-delay: 0.2s; }
+        .nav-link:nth-child(2) { animation-delay: 0.3s; }
+        .nav-link:nth-child(3) { animation-delay: 0.4s; }
+        .nav-link:nth-child(4) { animation-delay: 0.5s; }
+        .nav-link:nth-child(5) { animation-delay: 0.6s; }
+        .nav-link:nth-child(6) { animation-delay: 0.7s; }
+        .nav-link:nth-child(7) { animation-delay: 0.8s; }
+
+        main {
+            animation-delay: 0.3s;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@media (max-width: 1200px) {
+            .nav-link {
+                font-size: 0.9rem;
+                padding: 1rem 1.4rem !important;
+            }
+        }
+
+        @@media (max-width: 992px) {
+            .navbar-nav {
+                gap: 0.5rem;
+            }
+
+            .nav-item {
+                max-width: 180px;
+            }
+
+            .nav-link {
+                font-size: 0.85rem;
+                padding: 0.9rem 1.2rem !important;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.5rem;
+                gap: 10px;
+            }
+
+            .navbar-brand img {
+                height: 3.5em;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding-top: 1rem;
+            }
+
+            .nav-item {
+                max-width: 100%;
+                flex: none;
+            }
+
+            .nav-link {
+                padding: 1rem !important;
+                margin: 0;
+                font-size: 1rem;
+                min-height: auto;
+            }
+
+            main {
+                margin: 1rem;
+                padding: 2rem 1.5rem;
+                border-radius: 15px;
+            }
+
+            .footer {
+                padding: 1.5rem 0;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1.3rem;
+            }
+
+            .navbar-brand img {
+                height: 3em;
+            }
+
+            main {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        .nav-link.active {
+            background: rgba(217, 119, 6, 0.3);
+            border-color: rgba(217, 119, 6, 0.5);
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.2);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        *:focus {
+            outline: 2px solid rgb(255, 145, 0);
+            outline-offset: 2px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 3px rgb(255, 217, 0);
+        }
+
+        .nav-link:focus {
+            box-shadow: 0 0 0 3px rgba(217, 255, 2, 0.3);
+        }
+
+        main {
+            position: relative;
+        }
+
+        main::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent, rgba(217, 119, 6, 0.1), transparent);
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0;
+            animation: shimmer 3s infinite;
+        }
+
+        @@keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.5; }
+        }
+
+        @@media (min-width: 1400px) {
+            .navbar-nav {
+                gap: 1rem;
+            }
+
+            .nav-item {
+                max-width: 250px;
+            }
+
+            .nav-link {
+                font-size: 1.05rem;
+                padding: 1.3rem 2rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">
+                    <img src="https://cdn.imgchest.com/files/45xcve6eev7.png" alt="Catholirism Logo" />
+                    Catholirism
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Index">Página Inicial</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/CreatePacoteTuristico/Create_Pacote_Turistico">Igrejas Turísticas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/CRUDReserva/Index">Reservas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/CreateDestino/Create_Destino">Igrejas de Destino</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/CreateCliente/Create_Cliente">Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/ViewNotes/View_Notes">Anotações</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Account/Logout">Sair</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

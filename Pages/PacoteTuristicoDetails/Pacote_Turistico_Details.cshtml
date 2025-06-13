@@ -1,0 +1,44 @@
+﻿@page "{id?}"
+@model Catholirism.Pages.PacoteTuristicoDetails.Pacote_Turistico_DetailsModel
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+@{
+    ViewData["Title"] = "Detalhes de Pacotes Turísticos";
+}
+
+<h2>Detalhes - Pacote Turístico</h2>
+
+@if(Model.Pacote != null)
+{
+    <h3><strong>Nome:</strong> @Model.Pacote.Nome</h3>
+    <p><strong>Identificador:</strong> @Model.Pacote.Id</p>
+    <p><strong>Data de Início:</strong> @Model.Pacote.DataInicio.ToShortDateString()</p>
+    <p><strong>Capacidade Máxima:</strong> @Model.Pacote.CapacidadeMaxima</p>
+    <p><strong>Valor:</strong> @Model.Pacote.Preco.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</p>
+    <p><strong>Reservas realizadas:</strong> @Model.Pacote.ReservasAtuais</p>
+    if (Model.Pacote.PacoteDestinos.Any())
+    {
+        foreach (var pacoteDestino in Model.Pacote.PacoteDestinos)
+        {
+            var destino = pacoteDestino.Destino;
+            <div>
+                <p><strong>Cidade:</strong> @destino.Nome</p>
+                <p><strong>País:</strong> @destino.Pais</p>
+                @if (!string.IsNullOrEmpty(destino.ImagemUrl))
+                {
+                    <img src="@destino.ImagemUrl" alt="Imagem de @destino.Nome" style="max-width: 300px; max-height: 200px;" />
+                }
+                else
+                {
+                    <p>Nenhuma imagem disponível</p>
+                }
+                <br>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Nenhum destino encontrado</p>
+    }
+}

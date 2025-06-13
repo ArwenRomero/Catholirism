@@ -1,0 +1,523 @@
+﻿@page
+@model Catholirism.Pages.CRUDReserva.CreateModel
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+@{
+    ViewData["Title"] = "Criar Reserva";
+}
+
+<style>
+    .catholic-page {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .catholic-container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #6f42c1 0%, #8e44ad 100%);
+        color: white;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 15L55 35L75 35L60 50L65 70L50 55L35 70L40 50L25 35L45 35Z" fill="rgba(255,255,255,0.08)"/></svg>') repeat;
+        background-size: 60px 60px;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    .page-header::after {
+        content: '📿';
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+        font-size: 2.5rem;
+        opacity: 0.4;
+        z-index: 1;
+    }
+
+    .form-container {
+        padding: 2.5rem;
+    }
+
+    .reservation-info {
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+        border-radius: 12px;
+        padding: 1.8rem;
+        margin-bottom: 2.5rem;
+        border-left: 4px solid #ff9800;
+        position: relative;
+    }
+
+    .reservation-info::before {
+        content: '📋';
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        font-size: 1.8rem;
+        opacity: 0.7;
+    }
+
+    .reservation-info h4 {
+        color: #e65100;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .reservation-info h4::before {
+        content: '✨';
+        font-size: 1.2rem;
+    }
+
+    .reservation-info p {
+        color: #bf360c;
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.6;
+        font-weight: 500;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 2.2rem;
+        position: relative;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.8rem;
+        font-size: 1.2rem;
+        position: relative;
+        padding-left: 2.5rem;
+    }
+
+    .form-group label[for*="ClienteId"]::before {
+        content: '👤';
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.4rem;
+    }
+
+    .form-group label[for*="PacoteId"]::before {
+        content: '🎒';
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.4rem;
+    }
+
+    .required-field::after {
+        content: ' *';
+        color: #dc3545;
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1.3rem 1.6rem;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+        box-sizing: border-box;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #8e44ad;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(142, 68, 173, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form-control:hover {
+        border-color: #ced4da;
+        background: white;
+    }
+
+    .event-date-display {
+        background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border-left: 4px solid #4caf50;
+        margin-top: 1rem;
+        position: relative;
+    }
+
+    .event-date-display::before {
+        content: '📅';
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        font-size: 1.5rem;
+        opacity: 0.7;
+    }
+
+    .event-date-display h5 {
+        color: #2e7d32;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .event-date-display h5::before {
+        content: '🗓️';
+        font-size: 1rem;
+    }
+
+    .event-date-display p {
+        color: #1b5e20;
+        margin: 0;
+        font-size: 1.3rem;
+        font-weight: 700;
+        text-align: center;
+        padding: 0.8rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(46, 125, 50, 0.1);
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+        font-size: 0.95rem;
+        margin-top: 0.6rem;
+        font-weight: 500;
+        display: block;
+        padding-left: 0.5rem;
+        background: #fff5f5;
+        padding: 0.5rem;
+        border-radius: 6px;
+        border-left: 3px solid #dc3545;
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        color: white;
+        padding: 1.4rem 3.5rem;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.3rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 8px 25px rgba(142, 68, 173, 0.3);
+        position: relative;
+        overflow: hidden;
+        margin-top: 2rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 35px rgba(142, 68, 173, 0.4);
+        background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    }
+
+    .submit-btn:active {
+        transform: translateY(-2px);
+    }
+
+    .submit-btn::after {
+        content: '📿✨';
+        font-size: 1.2rem;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #6f42c1;
+        text-decoration: none;
+        font-weight: 600;
+        margin-top: 2rem;
+        padding: 1rem 2rem;
+        border: 2px solid #6f42c1;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .back-link::before {
+        content: '🔙';
+        font-size: 1.2rem;
+    }
+
+    .back-link:hover {
+        background: #6f42c1;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(111, 66, 193, 0.3);
+        text-decoration: none;
+    }
+
+    
+    .catholic-container {
+        animation: slideInUp 0.8s ease-out;
+    }
+
+    @@keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    
+    @@media (max-width: 768px) {
+        .catholic-container {
+            margin: 1rem;
+            border-radius: 10px;
+        }
+        
+        .page-header {
+            padding: 2rem 1.5rem;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+        }
+        
+        .form-container {
+            padding: 1.8rem;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .form-group label {
+            font-size: 1.1rem;
+            padding-left: 2rem;
+        }
+        
+        .form-control {
+            padding: 1.1rem 1.3rem;
+            font-size: 1rem;
+        }
+        
+        .submit-btn {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .page-header::after {
+            display: none;
+        }
+
+        .reservation-info::before {
+            display: none;
+        }
+
+        .reservation-info {
+            padding: 1.5rem;
+        }
+
+        .event-date-display::before {
+            display: none;
+        }
+    }
+
+    .form-control.is-invalid {
+        border-color: #dc3545;
+        background-color: #fff5f5;
+    }
+
+    .form-control.is-valid {
+        border-color: #28a745;
+        background-color: #f0fff4;
+    }
+
+    .form-control.is-valid:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1);
+    }
+
+    .validation-summary {
+        background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+        color: #721c24;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        border-left: 4px solid #dc3545;
+        font-weight: 600;
+    }
+
+    .validation-summary::before {
+        content: '⚠️ ';
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
+    }
+</style>
+
+<div class="catholic-page">
+    <div class="catholic-container">
+        <div class="page-header">
+            <h1>Criar Reserva de Peregrinação</h1>
+        </div>
+
+        <div class="form-container">
+            <div class="reservation-info">
+                <h4>Reserva de Pacote Religioso</h4>
+                <p>Realize uma nova reserva para um dos nossos pacotes de peregrinação. Selecione o cliente e o pacote desejado para confirmar a participação na jornada espiritual.</p>
+            </div>
+
+            @if (ViewData.ModelState.ErrorCount > 0)
+            {
+                <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+            }
+
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="ClienteId" class="control-label required-field">Nome do Cliente</label>
+                        <select asp-for="ClienteId" class="form-control" asp-items="Model.ClientesSelectList">
+                            <option value="">Selecione um cliente</option>
+                        </select>
+                        <span asp-validation-for="ClienteId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PacoteId" class="control-label required-field">Pacote de Peregrinação</label>
+                        <select asp-for="PacoteId" class="form-control" id="pacoteSelect">
+                            <option value="">Selecione um pacote</option>
+                            @foreach (var pacote in Model.Pacotes)
+                            {
+                                <option value="@pacote.Id" data-datainicio="@pacote.DataInicio">@pacote.Nome</option>
+                            }
+                        </select>
+                        <span asp-validation-for="PacoteId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <div class="event-date-display" id="eventDateContainer" style="display: none;">
+                        <h5>Data da Peregrinação</h5>
+                        <p id="dataInicio">Selecione um pacote para ver a data</p>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Confirmar Reserva</button>
+            </form>
+
+            <a asp-page="Index" class="back-link">Voltar à Lista</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("pacoteSelect").addEventListener("change", function () {
+        var selectedOption = this.options[this.selectedIndex];
+        var dataInicio = selectedOption.getAttribute("data-datainicio");
+        var eventDateContainer = document.getElementById("eventDateContainer");
+        var dataInicioElement = document.getElementById("dataInicio");
+        
+        if (dataInicio) {
+            var date = new Date(dataInicio);
+            var formattedDate = date.toLocaleDateString('pt-BR', {
+                weekday: 'long',
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
+            
+            // Capitalizar primeira letra
+            formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+            
+            dataInicioElement.textContent = formattedDate;
+            eventDateContainer.style.display = "block";
+            eventDateContainer.style.animation = "slideInUp 0.5s ease-out";
+        } else {
+            eventDateContainer.style.display = "none";
+            dataInicioElement.textContent = "Selecione um pacote para ver a data";
+        }
+    });
+
+    // Adicionar validação visual
+    document.querySelectorAll('.form-control').forEach(function(element) {
+        element.addEventListener('blur', function() {
+            if (this.value.trim() !== '') {
+                this.classList.add('is-valid');
+                this.classList.remove('is-invalid');
+            } else if (this.hasAttribute('required') || this.parentElement.querySelector('.required-field')) {
+                this.classList.add('is-invalid');
+                this.classList.remove('is-valid');
+            }
+        });
+    });
+</script>

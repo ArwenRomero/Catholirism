@@ -1,0 +1,588 @@
+﻿@page
+@model Catholirism.Pages.CRUDReserva.IndexModel
+
+@{
+    ViewData["Title"] = "Gerenciar Reservas";
+}
+
+<style>
+    .catholic-page {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .catholic-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #6f42c1 0%, #8e44ad 100%);
+        color: white;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 15L55 35L75 35L60 50L65 70L50 55L35 70L40 50L25 35L45 35Z" fill="rgba(255,255,255,0.08)"/></svg>') repeat;
+        background-size: 60px 60px;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    .page-header::after {
+        content: '📋';
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+        font-size: 2.5rem;
+        opacity: 0.4;
+        z-index: 1;
+    }
+
+    .content-container {
+        padding: 2.5rem;
+    }
+
+    .reservas-info {
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+        border-radius: 12px;
+        padding: 1.8rem;
+        margin-bottom: 2.5rem;
+        border-left: 4px solid #ff9800;
+        position: relative;
+    }
+
+    .reservas-info::before {
+        content: '🎯';
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        font-size: 1.8rem;
+        opacity: 0.7;
+    }
+
+    .reservas-info h4 {
+        color: #e65100;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .reservas-info h4::before {
+        content: '✨';
+        font-size: 1.2rem;
+    }
+
+    .reservas-info p {
+        color: #bf360c;
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.6;
+        font-weight: 500;
+    }
+
+    .action-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        border-radius: 12px;
+        border-left: 4px solid #8e44ad;
+    }
+
+    .create-btn {
+        background: linear-gradient(135deg, #28a745, #34ce57);
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .create-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .create-btn:hover::before {
+        left: 100%;
+    }
+
+    .create-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+        text-decoration: none;
+        color: white;
+    }
+
+    .create-btn::after {
+        content: '➕';
+        font-size: 1.2rem;
+    }
+
+    .stats-summary {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .stats-summary::before {
+        content: '📊';
+        font-size: 1.5rem;
+    }
+
+    .table-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        border: 1px solid #e9ecef;
+    }
+
+    .table-header {
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        color: white;
+        padding: 1.5rem 2rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .table-header::before {
+        content: '📋';
+        font-size: 1.8rem;
+    }
+
+    .table {
+        width: 100%;
+        margin: 0;
+        border-collapse: collapse;
+        font-size: 1rem;
+    }
+
+    .table thead {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    }
+
+    .table th {
+        padding: 1.5rem 1.2rem;
+        text-align: left;
+        font-weight: 600;
+        color: #495057;
+        border-bottom: 2px solid #dee2e6;
+        position: relative;
+        font-size: 1.1rem;
+    }
+
+    .table th:first-child::before {
+        content: '👤';
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .table th:nth-child(2)::before {
+        content: '🎒';
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .table th:nth-child(3)::before {
+        content: '📅';
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .table th:last-child::before {
+        content: '⚙️';
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #f1f3f4;
+    }
+
+    .table tbody tr:hover {
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .table tbody tr:nth-child(even) {
+        background: #fafbfc;
+    }
+
+    .table tbody tr:nth-child(even):hover {
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    }
+
+    .table td {
+        padding: 1.3rem 1.2rem;
+        color: #495057;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f3f4;
+    }
+
+    .table td:first-child {
+        font-weight: 600;
+        color: #343a40;
+    }
+
+    .action-links {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+    }
+
+    .action-link {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .action-link.edit {
+        background: linear-gradient(135deg, #ffc107, #ffcd39);
+        color: #856404;
+        border: 1px solid #ffc107;
+    }
+
+    .action-link.edit:hover {
+        background: linear-gradient(135deg, #ffcd39, #ffc107);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+        color: #856404;
+        text-decoration: none;
+    }
+
+    .action-link.edit::before {
+        content: '✏️';
+        font-size: 0.8rem;
+    }
+
+    .action-link.details {
+        background: linear-gradient(135deg, #17a2b8, #20c997);
+        color: white;
+        border: 1px solid #17a2b8;
+    }
+
+    .action-link.details:hover {
+        background: linear-gradient(135deg, #20c997, #17a2b8);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .action-link.details::before {
+        content: '👁️';
+        font-size: 0.8rem;
+    }
+
+    .action-link.delete {
+        background: linear-gradient(135deg, #dc3545, #e74c3c);
+        color: white;
+        border: 1px solid #dc3545;
+    }
+
+    .action-link.delete:hover {
+        background: linear-gradient(135deg, #e74c3c, #dc3545);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .action-link.delete::before {
+        content: '🗑️';
+        font-size: 0.8rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #6c757d;
+        font-size: 1.2rem;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 12px;
+        border: 2px dashed #dee2e6;
+        margin: 2rem 0;
+    }
+
+    .empty-state::before {
+        content: '📋';
+        font-size: 4rem;
+        display: block;
+        margin-bottom: 1.5rem;
+        opacity: 0.3;
+    }
+
+    .empty-state h3 {
+        color: #495057;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .empty-state p {
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    
+    .catholic-container {
+        animation: slideInUp 0.8s ease-out;
+    }
+
+    .table tbody tr {
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+    .table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+    .table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+    .table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+    .table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+
+    @@keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    
+    @@media (max-width: 768px) {
+        .catholic-container {
+            margin: 1rem;
+            border-radius: 10px;
+        }
+        
+        .page-header {
+            padding: 2rem 1.5rem;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+        }
+        
+        .content-container {
+            padding: 1.8rem;
+        }
+        
+        .action-bar {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        .table {
+            min-width: 600px;
+        }
+        
+        .table th,
+        .table td {
+            padding: 1rem 0.8rem;
+            font-size: 0.9rem;
+        }
+        
+        .action-links {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .action-link {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .page-header::after {
+            display: none;
+        }
+
+        .reservas-info::before {
+            display: none;
+        }
+
+        .reservas-info {
+            padding: 1.5rem;
+        }
+
+        .stats-summary {
+            font-size: 0.9rem;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .page-header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .content-container {
+            padding: 1.5rem;
+        }
+        
+        .create-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+        }
+        
+        .empty-state {
+            padding: 3rem 1.5rem;
+        }
+        
+        .empty-state::before {
+            font-size: 3rem;
+        }
+    }
+</style>
+
+<div class="catholic-page">
+    <div class="catholic-container">
+        <div class="page-header">
+            <h1>Gerenciar Reservas de Peregrinação</h1>
+        </div>
+
+        <div class="content-container">
+            <div class="reservas-info">
+                <h4>Sistema de Reservas Espirituais</h4>
+                <p>Gerencie todas as reservas de peregrinação e roteiros sagrados. Cada reserva representa uma jornada espiritual única dos fiéis pelos destinos católicos.</p>
+            </div>
+
+            <div class="action-bar">
+                <div class="stats-summary">
+                    Total de Reservas: @Model.Reserva.Count()
+                </div>
+                <a asp-page="Create" class="create-btn">Nova Reserva</a>
+            </div>
+
+            @if (Model.Reserva.Any())
+            {
+                <div class="table-container">
+                    <div class="table-header">
+                        Reservas Registradas
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Reserva[0].Cliente)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Reserva[0].PacoteTuristico)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Reserva[0].DataReserva)
+                                </th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Reserva)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Cliente.ClienteNome)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PacoteTuristico.Nome)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DataReserva)
+                                    </td>
+                                    <td>
+                                        <div class="action-links">
+                                            <a asp-page="./Edit" asp-route-id="@item.Id" class="action-link edit">Editar</a>
+                                            <a asp-page="./Details" asp-route-id="@item.Id" class="action-link details">Detalhes</a>
+                                            <a asp-page="./Delete" asp-route-id="@item.Id" class="action-link delete">Excluir</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <h3>Nenhuma Reserva Encontrada</h3>
+                    <p>Ainda não há reservas de peregrinação registradas no sistema.</p>
+                    <p>Clique no botão "Nova Reserva" para cadastrar a primeira jornada espiritual.</p>
+                    <a asp-page="Create" class="create-btn">Criar Primeira Reserva</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

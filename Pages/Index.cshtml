@@ -1,0 +1,458 @@
+﻿@page
+@using Catholirism.Data
+@model IndexModel
+@{
+    ViewData["Title"] = "Peregrinações Sagradas";
+}
+
+<style>
+    .catholic-home {
+        font-family: 'Open Sans', sans-serif;
+        background: transparent;
+        padding: 0;
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 50%, #8e44ad 100%);
+        color: white;
+        padding: 4rem 2rem;
+        text-align: center;
+        border-radius: 20px;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(142, 68, 173, 0.3);
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 15L55 35L75 35L60 50L65 70L50 55L35 70L40 50L25 35L45 35Z" fill="rgba(255,255,255,0.08)"/></svg>') repeat;
+        background-size: 80px 80px;
+        pointer-events: none;
+    }
+
+    .hero-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-subtitle {
+        font-size: 1.4rem;
+        font-weight: 400;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+        line-height: 1.6;
+    }
+
+    .hero-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        display: block;
+        position: relative;
+        z-index: 1;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @@keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .packages-section {
+        margin-top: 2rem;
+    }
+
+    .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 3rem;
+        position: relative;
+        padding-bottom: 1rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, #8e44ad, #9b59b6);
+        border-radius: 2px;
+    }
+
+    .section-title::before {
+        content: '⛪';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: -60px;
+        font-size: 2.5rem;
+        opacity: 0.7;
+    }
+
+    .packages-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2.5rem;
+        margin-top: 2rem;
+    }
+
+    .package-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: all 0.4s ease;
+        border: 1px solid rgba(142, 68, 173, 0.1);
+        position: relative;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .package-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(142, 68, 173, 0.2);
+        border-color: rgba(142, 68, 173, 0.3);
+    }
+
+    .package-header {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+        border-bottom: 2px solid #8e44ad;
+    }
+
+    .package-header::before {
+        content: '🏛️';
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        font-size: 2rem;
+        opacity: 0.6;
+    }
+
+    .package-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        line-height: 1.3;
+    }
+
+    .package-details {
+        padding: 2rem;
+    }
+
+    .package-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: rgba(142, 68, 173, 0.05);
+        border-radius: 12px;
+        border-left: 4px solid #8e44ad;
+        transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+        background: rgba(142, 68, 173, 0.1);
+        transform: translateX(5px);
+    }
+
+    .info-icon {
+        font-size: 1.5rem;
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 3px 10px rgba(142, 68, 173, 0.3);
+    }
+
+    .info-content {
+        flex: 1;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.3rem;
+    }
+
+    .info-value {
+        font-size: 1.2rem;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .price-highlight {
+        color: #e74c3c;
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+
+    .details-btn {
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        color: white;
+        padding: 1.2rem 2.5rem;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 8px 25px rgba(142, 68, 173, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .details-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .details-btn:hover::before {
+        left: 100%;
+    }
+
+    .details-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(142, 68, 173, 0.4);
+        background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        color: white;
+        text-decoration: none;
+    }
+
+    .details-btn::after {
+        content: '→';
+        font-size: 1.3rem;
+        transition: transform 0.3s ease;
+    }
+
+    .details-btn:hover::after {
+        transform: translateX(5px);
+    }
+
+    .no-packages {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(142, 68, 173, 0.05);
+        border-radius: 20px;
+        border: 2px dashed rgba(142, 68, 173, 0.3);
+        margin-top: 2rem;
+    }
+
+    .no-packages-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        opacity: 0.6;
+        display: block;
+    }
+
+    .no-packages-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #6c757d;
+        margin-bottom: 1rem;
+    }
+
+    .no-packages-text {
+        font-size: 1.2rem;
+        color: #868e96;
+        line-height: 1.6;
+    }
+
+    /* Animações */
+    .package-card:nth-child(1) { animation-delay: 0.1s; }
+    .package-card:nth-child(2) { animation-delay: 0.2s; }
+    .package-card:nth-child(3) { animation-delay: 0.3s; }
+    .package-card:nth-child(4) { animation-delay: 0.4s; }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-section {
+        animation: slideInDown 1s ease-out;
+    }
+
+    @@keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsividade */
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .hero-section {
+            padding: 3rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .packages-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .package-card {
+            margin: 0 1rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+
+        .hero-section {
+            padding: 2rem 1rem;
+        }
+
+        .package-header,
+        .package-details {
+            padding: 1.5rem;
+        }
+
+        .package-name {
+            font-size: 1.5rem;
+        }
+
+        .info-item {
+            padding: 0.8rem;
+        }
+
+        .details-btn {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<div class="catholic-home">
+    <div class="hero-section">
+        <span class="hero-icon">⛪</span>
+        <h1 class="hero-title">Peregrinações Sagradas</h1>
+        <p class="hero-subtitle">Descubra destinos de fé e encontre a paz espiritual em santuários ao redor do mundo</p>
+    </div>
+
+    <div class="packages-section">
+        @if (Model.PacotesDisponiveis.Any())
+        {
+            <h2 class="section-title">Pacotes Disponíveis</h2>
+            <div class="packages-grid">
+                @foreach (var pacote in Model.PacotesDisponiveis)
+                {
+                    <div class="package-card">
+                        <div class="package-header">
+                            <h3 class="package-name">@pacote.Nome</h3>
+                        </div>
+                        <div class="package-details">
+                            <div class="package-info">
+                                <div class="info-item">
+                                    <div class="info-icon">📅</div>
+                                    <div class="info-content">
+                                        <div class="info-label">Data de Início</div>
+                                        <div class="info-value">@pacote.DataInicio.ToShortDateString()</div>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-icon">💰</div>
+                                    <div class="info-content">
+                                        <div class="info-label">Investimento</div>
+                                        <div class="info-value price-highlight">@pacote.Preco.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="details-btn" asp-area="" asp-page="/PacoteTuristicoDetails/Pacote_Turistico_Details" asp-route-id="@pacote.Id">
+                                Ver Detalhes
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="no-packages">
+                <span class="no-packages-icon">🏛️</span>
+                <h2 class="no-packages-title">Novos Destinos em Preparação</h2>
+                <p class="no-packages-text">Estamos organizando experiências únicas de peregrinação.<br>Em breve, novos pacotes sagrados estarão disponíveis.</p>
+            </div>
+        }
+    </div>
+</div>

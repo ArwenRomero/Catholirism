@@ -1,0 +1,431 @@
+﻿@page
+@model Catholirism.Pages.CreateDestino.CreateDestinoModel
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+@{
+    ViewData["Title"] = "Criar Destino";
+}
+
+<style>
+    .catholic-page {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .catholic-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #6f42c1 0%, #8e44ad 100%);
+        color: white;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 15L55 35L75 35L60 50L65 70L50 55L35 70L40 50L25 35L45 35Z" fill="rgba(255,255,255,0.08)"/></svg>') repeat;
+        background-size: 60px 60px;
+    }
+
+    .page-header h2 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    .page-header::after {
+        content: '⛪';
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+        font-size: 2.5rem;
+        opacity: 0.4;
+        z-index: 1;
+    }
+
+    .form-container {
+        padding: 2.5rem;
+    }
+
+    .church-info {
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+        border-radius: 12px;
+        padding: 1.8rem;
+        margin-bottom: 2.5rem;
+        border-left: 4px solid #ff9800;
+        position: relative;
+    }
+
+    .church-info::before {
+        content: '🏛️';
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        font-size: 1.8rem;
+        opacity: 0.7;
+    }
+
+    .church-info h4 {
+        color: #e65100;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .church-info h4::before {
+        content: '✨';
+        font-size: 1.2rem;
+    }
+
+    .church-info p {
+        color: #bf360c;
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.6;
+        font-weight: 500;
+    }
+
+    .form-group {
+        margin-bottom: 2.2rem;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.8rem;
+        font-size: 1.2rem;
+        position: relative;
+        padding-left: 2.5rem;
+    }
+
+    .form-group label[for*="Nome"]::before {
+        content: '⛪';
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.4rem;
+    }
+
+    .form-group label[for*="Pais"]::before {
+        content: '🌍';
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.4rem;
+    }
+
+    .form-group label[for*="ImagemUrl"]::before {
+        content: '🖼️';
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.4rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1.3rem 1.6rem;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+        box-sizing: border-box;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #8e44ad;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(142, 68, 173, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form-control:hover {
+        border-color: #ced4da;
+        background: white;
+    }
+
+    .validation-error {
+        color: #dc3545;
+        font-size: 0.95rem;
+        margin-top: 0.6rem;
+        font-weight: 500;
+        display: block;
+        padding-left: 0.5rem;
+        background: #fff5f5;
+        padding: 0.5rem;
+        border-radius: 6px;
+        border-left: 3px solid #dc3545;
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        color: white;
+        padding: 1.4rem 3.5rem;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.3rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 8px 25px rgba(142, 68, 173, 0.3);
+        position: relative;
+        overflow: hidden;
+        margin-top: 2rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 35px rgba(142, 68, 173, 0.4);
+        background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    }
+
+    .submit-btn:active {
+        transform: translateY(-2px);
+    }
+
+    .submit-btn::after {
+        content: '⛪➕';
+        font-size: 1.2rem;
+    }
+
+    .success-message {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        color: #155724;
+        padding: 1.5rem 2rem;
+        border-radius: 12px;
+        margin-top: 2rem;
+        border-left: 4px solid #28a745;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.1rem;
+    }
+
+    .success-message::before {
+        content: '✅';
+        font-size: 1.8rem;
+        background: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 3px 8px rgba(40, 167, 69, 0.3);
+    }
+
+    .form-tips {
+        background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        border-left: 4px solid #4caf50;
+    }
+
+    .form-tips h5 {
+        color: #2e7d32;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-tips h5::before {
+        content: '💡';
+        font-size: 1.3rem;
+    }
+
+    .form-tips ul {
+        margin: 0;
+        padding-left: 1.5rem;
+        color: #1b5e20;
+    }
+
+    .form-tips li {
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+
+    /* Animação de entrada */
+    .catholic-container {
+        animation: slideInUp 0.8s ease-out;
+    }
+
+    @@keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsividade para dispositivos móveis */
+    @@media (max-width: 768px) {
+        .catholic-container {
+            margin: 1rem;
+            border-radius: 10px;
+        }
+        
+        .page-header {
+            padding: 2rem 1.5rem;
+        }
+        
+        .page-header h2 {
+            font-size: 2rem;
+        }
+        
+        .form-container {
+            padding: 1.8rem;
+        }
+        
+        .form-group label {
+            font-size: 1.1rem;
+            padding-left: 2rem;
+        }
+        
+        .form-control {
+            padding: 1.1rem 1.3rem;
+            font-size: 1rem;
+        }
+        
+        .submit-btn {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .page-header::after {
+            display: none;
+        }
+
+        .church-info::before {
+            display: none;
+        }
+
+        .church-info {
+            padding: 1.5rem;
+        }
+    }
+
+    .form-control.is-invalid {
+        border-color: #dc3545;
+        background-color: #fff5f5;
+    }
+
+    .form-control.is-valid {
+        border-color: #28a745;
+        background-color: #f0fff4;
+    }
+
+    .form-control.is-valid:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1);
+    }
+</style>
+
+<div class="catholic-page">
+    <div class="catholic-container">
+        <div class="page-header">
+            <h2>Criar Igreja de Destino</h2>
+        </div>
+
+        <div class="form-container">
+            <div class="church-info">
+                <h4>Cadastro de Santuários e Igrejas</h4>
+                <p>Registre os destinos sagrados que farão parte dos roteiros de peregrinação. Cada igreja cadastrada representará um local de visitação espiritual e cultural para os fiéis.</p>
+            </div>
+
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="Destino.Nome">Nome da Igreja ou Santuário</label>
+                    <input asp-for="Destino.Nome" class="form-control" placeholder="Ex: Basílica de Nossa Senhora Aparecida" />
+                    <span asp-validation-for="Destino.Nome" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Destino.Pais">País (Abreviação)</label>
+                    <input asp-for="Destino.Pais" class="form-control" placeholder="Ex: BR, IT, FR, PT" maxlength="3" style="text-transform: uppercase;" />
+                    <span asp-validation-for="Destino.Pais" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Destino.ImagemUrl">URL da Imagem</label>
+                    <input asp-for="Destino.ImagemUrl" class="form-control" type="url" placeholder="https://exemplo.com/imagem-da-igreja.jpg" />
+                    <span asp-validation-for="Destino.ImagemUrl" class="validation-error"></span>
+                </div>
+
+                <div class="form-tips">
+                    <h5>Dicas para o Cadastro</h5>
+                    <ul>
+                        <li><strong>Nome:</strong> Use o nome oficial completo da igreja ou santuário</li>
+                        <li><strong>País:</strong> Use códigos ISO (BR=Brasil, IT=Itália, FR=França, etc.)</li>
+                        <li><strong>Imagem:</strong> Prefira imagens de alta qualidade que mostrem a fachada da igreja</li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="submit-btn">Cadastrar Destino Sagrado</button>
+            </form>
+
+            @if (!string.IsNullOrEmpty(Model.Mensagem))
+            {
+                <div class="success-message">
+                    @Model.Mensagem
+                </div>
+            }
+        </div>
+    </div>
+</div>

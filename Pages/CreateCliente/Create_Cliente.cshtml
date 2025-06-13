@@ -1,0 +1,367 @@
+﻿@page
+@model Catholirism.Pages.CreateCliente.Create_ClienteModel
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+@{
+    ViewData["Title"] = "Cadastrar Clientes";
+}
+
+<style>
+    .catholic-page {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .catholic-container {
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #6f42c1 0%, #8e44ad 100%);
+        color: white;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 10L60 40L90 40L70 60L80 90L50 70L20 90L30 60L10 40L40 40Z" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+        background-size: 50px 50px;
+    }
+
+    .page-header h2 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    .page-header::after {
+        content: '👥';
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+        font-size: 2rem;
+        opacity: 0.3;
+        z-index: 1;
+    }
+
+    .form-container {
+        padding: 2.5rem;
+    }
+
+    .success-message {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        color: #155724;
+        padding: 1.2rem 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        border-left: 4px solid #28a745;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .success-message::before {
+        content: '✓';
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #28a745;
+        background: white;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(40, 167, 69, 0.3);
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.8rem;
+        font-size: 1.1rem;
+        position: relative;
+        padding-left: 2rem;
+    }
+
+    .form-group label[for*="Nome"]::before {
+        content: '👤';
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.2rem;
+    }
+
+    .form-group label[for*="Email"]::before {
+        content: '✉️';
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.2rem;
+    }
+
+    .form-group label[for*="Telefone"]::before {
+        content: '📱';
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.2rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1.2rem 1.5rem;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #8e44ad;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form-control:hover {
+        border-color: #ced4da;
+        background: white;
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        font-weight: 500;
+        display: block;
+        padding-left: 0.5rem;
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        color: white;
+        padding: 1.2rem 3rem;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 6px 20px rgba(142, 68, 173, 0.3);
+        position: relative;
+        overflow: hidden;
+        margin-top: 1.5rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(142, 68, 173, 0.4);
+        background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    }
+
+    .submit-btn:active {
+        transform: translateY(-1px);
+    }
+
+    .submit-btn::after {
+        content: '👤➕';
+        font-size: 1.1rem;
+    }
+
+    .client-info {
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border-left: 4px solid #2196f3;
+        position: relative;
+    }
+
+    .client-info::before {
+        content: 'ℹ️';
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.5rem;
+        opacity: 0.7;
+    }
+
+    .client-info h4 {
+        color: #1976d2;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        font-size: 1.2rem;
+    }
+
+    .client-info p {
+        color: #0d47a1;
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    
+    .catholic-container {
+        animation: slideInUp 0.8s ease-out;
+    }
+
+    @@keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    
+    @@media (max-width: 768px) {
+        .catholic-container {
+            margin: 1rem;
+            border-radius: 10px;
+        }
+        
+        .page-header {
+            padding: 2rem 1.5rem;
+        }
+        
+        .page-header h2 {
+            font-size: 2rem;
+        }
+        
+        .form-container {
+            padding: 1.5rem;
+        }
+        
+        .form-group label {
+            font-size: 1rem;
+        }
+        
+        .form-control {
+            padding: 1rem;
+        }
+        
+        .submit-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        .page-header::after {
+            display: none;
+        }
+    }
+
+    
+    .form-control.is-invalid {
+        border-color: #dc3545;
+        background-color: #fff5f5;
+    }
+
+    .form-control.is-valid {
+        border-color: #28a745;
+        background-color: #f0fff4;
+    }
+
+    .form-control.is-valid:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+    }
+</style>
+
+<div class="catholic-page">
+    <div class="catholic-container">
+        <div class="page-header">
+            <h2>Cadastrar Clientes</h2>
+        </div>
+
+        <div class="form-container">
+            <div class="client-info">
+                <h4>Cadastro de Fiéis</h4>
+                <p>Registre os dados dos fiéis que participarão dos pacotes de turismo religioso. Todas as informações são confidenciais e utilizadas apenas para fins de organização das peregrinações.</p>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Mensagem))
+            {
+                <div class="success-message">
+                    @Model.Mensagem
+                </div>
+            }
+
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="Cliente.ClienteNome">Nome Completo</label>
+                    <input asp-for="Cliente.ClienteNome" class="form-control" placeholder="Digite o nome completo do cliente" />
+                    <span asp-validation-for="Cliente.ClienteNome" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Cliente.ClienteEmail">E-mail</label>
+                    <input asp-for="Cliente.ClienteEmail" class="form-control" type="email" placeholder="exemplo@email.com" />
+                    <span asp-validation-for="Cliente.ClienteEmail" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Cliente.ClienteTelefone">Telefone / Celular</label>
+                    <input asp-for="Cliente.ClienteTelefone" class="form-control" type="tel" placeholder="(11) 99999-9999" />
+                    <span asp-validation-for="Cliente.ClienteTelefone" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="submit-btn">Cadastrar Cliente</button>
+            </form>
+        </div>
+    </div>
+</div>
