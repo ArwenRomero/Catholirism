@@ -2,6 +2,8 @@
 
 Catholirism é um sistema de gerenciamento de pacotes turísticos focado em turismo religioso, permitindo a administração de clientes, destinos, pacotes turísticos, reservas e anotações relacionadas a peregrinações e locais sagrados.
 
+Fiz o projeto antes da alteração do enunciado, por isso não foi feito os dois Partial View's.
+
 ## Funcionalidades
 
 - **Autenticação de Usuários**: Acesso seguro com login e senha.
