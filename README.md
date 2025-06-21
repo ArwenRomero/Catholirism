@@ -1,10 +1,10 @@
 # Catholirism
 
+## PROJETO EM SERVIDOR: https://anvil.loremz.online/ (RECOMENDADO)
+
 Catholirism é um sistema de gerenciamento de pacotes turísticos focado em turismo religioso, permitindo a administração de clientes, destinos, pacotes turísticos, reservas e anotações relacionadas a peregrinações e locais sagrados.
 
 Fiz o projeto antes da alteração do enunciado, por isso não foi feito os dois Partial View's.
-
-Projeto em servidor: https://anvil.loremz.online/
 
 ## Funcionalidades
 
